@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package com.quorumhill.wonton;
+
+import "../content/pledge.proto";
+
+message ApiPledgeInvalidationRequest {
+  PledgeId pledge_id = 1;
+  string reason = 2;
+}
+
+message ApiPledgeInvalidationResponse {
+}
+
+message ApiPledgeStructureConditionRequest {
+  PledgeId pledge_id = 1;
+  PledgeCondition commitment_condition_format_structured = 2;
+}
+
+message ApiPledgeStructureConditionResponse {
+}

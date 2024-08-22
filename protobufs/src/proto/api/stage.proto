@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package com.quorumhill.wonton;
+
+import "../content/stage.proto";
+
+message ApiStageGetRequest {}
+
+message ApiStageGetResponse { StageInfo stage_info = 1; }

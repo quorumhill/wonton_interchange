@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package com.quorumhill.wonton;
+
+import "../content/pledge.proto";
+
+message PledgeStageStatusProcessing {}
+
+message PledgeStageStatusRegisteredConditionStatusSatisfied {
+}
+
+message PledgeStageStatusRegisteredConditionStatusUnsatisfied {
+  double condition_progress_estimate = 1;
+}
+
+message PledgeStageStatusRegistered {
+  oneof condition_status {
+    PledgeStageStatusRegisteredConditionStatusSatisfied condition_status_satisfied = 1;
+    PledgeStageStatusRegisteredConditionStatusUnsatisfied condition_status_unsatisfied = 2;
+  }
+}
+
+message PledgeStageStatusInvalid {
+  string reason = 1;
+}
+
+message PledgeStageStatus {
+  oneof status {
+    PledgeStageStatusProcessing status_processing = 1;
+    PledgeStageStatusRegistered status_registered = 2;
+    PledgeStageStatusInvalid status_invalid = 3;
+  }
+}
+
+message PledgeStageCondition {
+  string format_unstructured = 1;
+  PledgeCondition format_structured = 2;
+}
+
+message PledgeStageInfo {
+  PledgeId pledge_id = 1;
+  int64 creation_timestamp_usec = 2;
+  PledgeStageStatus status = 3;
+  PledgeStageCondition commitment_condition = 4;
+  int64 commitment_value_usd = 5;
+}
+
+message UniversityStageInfo {
+  string domain_name = 1;
+  repeated PledgeStageInfo pledge_infos = 2;
+}
+
+message StageInfo { repeated UniversityStageInfo university_infos = 1; }

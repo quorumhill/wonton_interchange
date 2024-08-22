@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package com.quorumhill.wonton;
+
+message InvestmentsBackdropInfo {
+  int64 investment_deadline_usec = 1;
+}
+
+message UniversityStatus {
+  enum Enum {
+    UNKNOWN = 0;
+    ENABLED = 1;
+    DISABLED = 2;
+  }
+}
+
+message UniversityStatusEventReason {
+  enum Enum {
+    UNKNOWN = 0;
+    INITIAL_ACCESS = 1;
+  }
+}
+
+message UniversityStatusEvent {
+  UniversityStatus.Enum status = 1;
+  int64 event_timestamp_usec = 2;
+  oneof reason {
+    UniversityStatusEventReason.Enum reason_enum = 3;
+    string reason_string = 4;
+  }
+}
+
+message UniversityBackdropInfo {
+  string domain_name = 1;
+  repeated UniversityStatusEvent statuses = 2;
+  string country_code = 3;
+}
+
+message BackdropInfo {
+  InvestmentsBackdropInfo investments_info = 1;
+  repeated UniversityBackdropInfo university_infos = 2;
+}

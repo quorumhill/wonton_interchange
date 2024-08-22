@@ -1,0 +1,15 @@
+{
+  "name": "wonton_interchange_protobufs",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "main": "src/index.js",
+  "dependencies": {
+    "protobufjs": "^7.3.3"
+  },
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "prettier": "^3.3.3",
+    "typescript": "^5.5.4"
+  }
+}

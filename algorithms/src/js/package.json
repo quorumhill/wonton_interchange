@@ -1,0 +1,19 @@
+{
+  "name": "wonton_interchange_algorithms",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "main": "src/index.js",
+  "scripts": {
+    "export_all": "./scripts/sh/export_all.sh"
+  },
+  "dependencies": {
+    "long": "^5.2.3",
+    "wonton_interchange_protobufs": "file:../../../protobufs/src/js"
+  },
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "prettier": "^3.3.3",
+    "typescript": "^5.5.4"
+  }
+}

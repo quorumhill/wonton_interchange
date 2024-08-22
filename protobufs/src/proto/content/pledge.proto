@@ -1,0 +1,140 @@
+syntax = "proto3";
+
+package com.quorumhill.wonton;
+
+import "../system/secrets.proto";
+
+message PledgeId {
+  oneof version {
+    string version_form = 1;
+  }
+}
+
+message PledgeCreator {
+  UserType.Enum type = 1;
+  string username = 2;
+  string password = 3;
+}
+
+message PledgeSource {
+  enum Enum {
+    UNKNOWN = 0;
+    FORM = 1;
+    API = 2;
+  }
+}
+
+message PledgeMetadata {
+  PledgeCreator creator = 1;
+  PledgeSource.Enum source = 2;
+}
+
+message PledgeConditionCombinerFunction {
+  enum Enum {
+    UNKNOWN = 0;
+    AND = 1;
+    OR = 2;
+  }
+}
+
+message PledgeConditionComparatorFunction {
+  enum Enum {
+    UNKNOWN = 0;
+    GREATER_EQUAL = 1;
+  }
+}
+
+message PledgeConditionPredicateCombiner {
+  PledgeConditionCombinerFunction.Enum combiner = 1;
+  repeated PledgeConditionPredicate clauses = 2;
+}
+
+message PledgeConditionPredicateUniversityCount {
+  PledgeConditionComparatorFunction.Enum comparator = 1;
+  int64 university_count = 2;
+}
+
+message PledgeConditionPredicateCommitmentValue {
+  PledgeConditionComparatorFunction.Enum comparator = 1;
+  int64 commitment_value_usd = 2;
+}
+
+message PledgeConditionPredicate {
+  oneof predicate {
+    PledgeConditionPredicateCombiner predicate_combiner = 1;
+    PledgeConditionPredicateUniversityCount predicate_university_count = 2;
+    PledgeConditionPredicateCommitmentValue predicate_commitment_value = 3;
+  }
+}
+
+message PledgeConditionWhereCombiner {
+  PledgeConditionCombinerFunction.Enum combiner = 1;
+  repeated PledgeConditionWhere clauses = 2;
+}
+
+message PledgeConditionWhereUniversityName { string domain_name = 1; }
+
+message PledgeConditionWhereCountryName { string country_code = 1; }
+
+message PledgeConditionWhereCommitmentValueSlice {
+  enum Enum {
+    UNKNOWN = 0;
+    COUNTRY = 1;
+    UNIVERSITY = 2;
+    PLEDGE = 3;
+  }
+}
+
+message PledgeConditionWhereCommitmentValue {
+  PledgeConditionWhereCommitmentValueSlice.Enum aggregation_slice = 1;
+  PledgeConditionComparatorFunction.Enum comparator = 2;
+  int64 commitment_value_usd = 3;
+}
+
+message PledgeConditionWhere {
+  oneof where {
+    PledgeConditionWhereCombiner where_combiner = 1;
+    PledgeConditionWhereUniversityName where_university_name = 2;
+    PledgeConditionWhereCountryName where_country_name = 3;
+    PledgeConditionWhereCommitmentValue where_commitment_value = 4;
+  }
+}
+
+message PledgeCondition {
+  PledgeConditionPredicate predicate = 1;
+  PledgeConditionWhere where = 2;
+}
+
+message PledgeSwitchCondition {
+  oneof format {
+    string format_unstructured = 1;
+    PledgeCondition format_structured = 2;
+  }
+}
+
+message PledgeUpdateCreation {
+  string university_domain_name = 1;
+  PledgeSwitchCondition commitment_condition = 2;
+  int64 commitment_value_usd = 3;
+}
+
+message PledgeUpdateDeletion {
+}
+
+message PledgeUpdateInvalidation {
+  string reason = 1;
+}
+
+message PledgeUpdateConditionStructure {
+  PledgeCondition commitment_condition_format_structured = 1;
+}
+
+message PledgeUpdate {
+  PledgeMetadata metadata = 1;
+  oneof update {
+    PledgeUpdateCreation update_creation = 2;
+    PledgeUpdateDeletion update_deletion = 3;
+    PledgeUpdateInvalidation update_invalidation = 4;
+    PledgeUpdateConditionStructure update_condition_structure = 5;
+  }
+}
